@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test Execution Report</title>
+	
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.10.1.min.js'></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="http://cdn.rawgit.com/noelboss/featherlight/1.0.4/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="TER.js"></script>
+	
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600|Raleway:500' rel='stylesheet' type='text/css' />
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="http://cdn.rawgit.com/noelboss/featherlight/1.0.4/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="global.css" type="text/css" />-->
+    <!--[if IE]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <style type='text/css'>
+    html {
+				overflow-y: scroll;}
+			body {
+				color: #022b37;
+				font-family: 'Open Sans', Calibri;
+				font-size: 14px;
+				margin: 0;
+			}
+			a {
+				color: #507fd6;
+				text-decoration: none;
+			}
+			#extent-container {
+				width: 100%;
+			}
+			.topbar, .title, .menu, .dashboard, .filters, .content, .footer, .testset {
+				margin: 0 auto;
+				width: 1100px;
+			}
+			#topbar {
+				background-color: #f1f1f1;
+				min-height: 30px;
+			}
+			.topbar {
+				font-size: 11px;
+				padding: 4px 0;
+			}
+			.topbar-items-right {
+				float: right;
+			}
+			.topbar-items-right span {
+				border-left: 1px solid #ccc;
+				padding: 0px 10px;
+				vertical-align: sub;
+			} .topbar-items-right span:first-child {
+				border-left: none;
+			}
+			.headline {
+				color: #777;
+			}
+			#title {
+				margin: 25px 0 30px;
+			}
+			.logo {
+				font-family: Raleway;
+				font-size: 16px;
+				letter-spacing: 1px;
+			}
+			.menu-items {
+				margin-top: -35px;
+				margin-left: -200px;
+				float: left;
+			}
+			.menu ul li {
+				display: inline;
+				list-style-image: none;
+				list-style-position: outside;
+				padding: 10px 10px 45px;
+			}			
+			.menu span {
+				color: #507fd6;
+				cursor: pointer;
+				font-family: raleway;
+				font-size: 12px;
+				text-transform: uppercase;
+			}
+			.menu-item-selected {
+				background-color: #f9f9f9;
+			}
+			#dashboard {
+				background-color: #f9f9f9;
+				border-bottom: 1px solid #dbdbdb;
+				max-height: 320px !important;
+				height: 320px !important;
+				margin-top: 20px;
+			}
+			.dashboard {
+				padding: 40px 0;
+			}
+			#tabs-2, #tabs-3 {
+				display: none;
+			}
+			.graphs {
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+			.graphs div {
+				display: inline-block;
+				margin-bottom: -40px;
+			}
+			.summary-items {
+				margin: 0 auto 20px;
+				width: 1000px;
+			}
+			.summary-item {
+				border: 1px solid #b4bfc3;
+				display: inline-block;
+				margin: 10px;
+				padding: 15px 0 30px;
+				position: relative;
+				text-align: center;
+				width: 220px;
+			}
+			.summary-item span {
+				display: block;
+			}
+			.item-value {
+				color: #a4afb3;
+				font-size: 24px;
+				line-height: 40px;
+			}
+			.item-name {
+				color: #022b36;
+				font-size: 13px;
+			}
+			.filters {
+				margin: 50px auto 25px !important;
+			}
+			.by-status {
+				margin-right: 40px;
+			}
+			.by-status, .by-feature {
+				display: inline-block;
+			}
+			.content {
+				margin: 20px auto 100px !important;
+			}
+			.test {
+				border: 1px solid #b4bfc3;
+				color: #507fd6;
+				cursor: pointer;
+				margin: 5px 0;
+				padding: 20px;
+			}
+			.testset {
+				border: 2px solid #b4bfc3;
+				color: black; /*#507fd6;*/
+				background-color: #f7f7f7;
+				cursor: pointer;
+				margin: 10px auto 35px !important;
+				padding: 20px;
+			}
+			
+			.passline {
+				/*background-color: #32cd32 !important;*/
+				border: 2px solid #32cd32;
+			}
+			
+			.failline {
+				/*background-color: #FF0000 !important;*/
+				border: 2px solid red;
+			}
+				
+			#testsetstatus .pass {
+				background-color: #32cd32 !important;
+				color: #fff !important;
+				text-transform: uppercase;
+				padding: 2px 10px;
+				font-family: Raleway;
+				font-size: 12px;
+				text-align: center;
+				border: 1px solid #32cd32;
+			}
+			
+			#testsetstatus .fail {
+				background-color: red !important;
+				color: #fff !important;
+				text-transform: uppercase;
+				padding: 2px 10px;
+				font-family: Raleway;
+				font-size: 12px;
+				text-align: center;
+				border: 1px solid red;
+			}
+
+			.test-expanded {
+				border: 1px solid #6b767a;
+				color: #444;
+			}
+			.name {
+				font-size: 14px;
+			}
+			.test-info {
+				float: left;
+				margin-right: 30px;
+				margin-top: -15px;
+				
+			}
+			.test-info-time {
+				float: right;
+				margin-right: 30px;
+				margin-top: -15px;
+				text-transform: uppercase;
+			}
+			.test-status, .startedAt, .endedAt {
+				font-family: Verdana, "Lucida Grande", Raleway, 'Open Sans';
+				font-size: 11px;
+				padding: 4px 10px;
+			}
+			.test-status {
+				text-transform: uppercase;
+				color: #fff !important;
+			}
+			.startedAt, .endedAt {
+				border: 1px solid #507fd6;
+				color: #121212;
+			}
+			.toggle-span {
+				float: right;
+				margin-top: 0px;
+				margin-left: 6px;
+			}
+			.toggle-span i {
+				color: black;
+				font-size: 22px;
+			}
+			.description {
+				background-color: #f7f7f7;
+				color: #444;
+				margin-top: 15px;
+				padding: 10px 15px;
+			}
+			.description-title {
+				font-size: 12px;
+				font-weight: 600;
+				text-transform: uppercase;
+			}
+			.test-header {
+				/*background-color: #fdfeff;*/
+				margin: -20px;
+				padding: 20px;
+			}
+			.exec-info {
+				display: none;
+				margin-top: 25px;
+			}
+			.extent-table {
+				border: 1px solid #ddd;
+				border-collapse: collapse;
+				width: 100%;
+			}
+			.extent-table tr:hover {
+				background-color: #f9fafc;
+			}
+			.extent-table th {
+				background: #f5f6f8;
+			    border-bottom: 1px solid #ddd;
+			    color: #242533;
+			    font-size: 8pt;
+			    font-weight: 600;
+			    padding: 12px 10px;
+				text-align: left;
+			    text-transform: uppercase;
+			}
+			.extent-table td {
+				padding: 7px 10px;
+				border-bottom: 1px solid #e9e9e9;
+				word-break: break-all;
+			}
+			.extent-table td:first-child {
+				width: 70px;
+			}
+			.extent-table td:nth-child(2) {
+				font-size: 12px;
+				text-align: center;
+				width: 50px;
+			}
+			.extent-table td:nth-child(3) {
+				min-width: 300px;
+				/*width: 530px;*/
+			}
+			.extent-table td:nth-child(4) {
+				max-width: 400px;
+				/*width: 450px;*/
+			}
+			.extent-button {
+				border: 1px solid;
+				cursor: pointer;
+				display: inline;
+				font-family: Raleway, 'Open Sans';
+				font-size: 11px;
+				text-transform: uppercase;
+				text-decoration: none;
+				line-height: 13.4667px;
+				padding: 6px 18px;
+				text-align: center;
+				transition: all 0.2s ease-in-out 0s;
+				vertical-align: middle;
+			}
+			.extent-button i {
+				padding-right: 5px;
+			}
+			.extent-button-green {
+				border-color: #5cb85c;
+				color: #5cb85c;
+			}
+			.extent-button-green:hover {
+				background-color: #5cb85c;
+				color: white;
+			}
+			.extent-button-red {
+				border-color: #d9534f;
+				color: #d9534f;
+			}
+			.extent-button-red:hover {
+				background-color: #d9534f;
+				color: white;
+			}
+			.extent-button-orange {
+				border-color: #f0ad4e;
+				color: #f0ad4e;
+			}
+			.extent-button-orange:hover {
+				background-color: #f0ad4e;
+				color: white;
+			}
+			.extent-button-lightblack {
+				border-color:  #999;
+				color: #999;
+			}
+			.extent-button-lightblack:hover {
+				background-color: #999;
+				color: white;
+			}
+			.extent-button-lightred {
+				border-color: #e67672;
+				color: #e67672;
+			}
+			.extent-button-lightred:hover {
+				background-color: #e67672;
+				color: white;
+			}
+			.status {
+				font-family: Raleway;
+				font-size: 12px;
+				text-align: center;
+			}
+			.status.fail, .status.fail i {
+				color: red;
+			} .test-info .fail  {
+				background-color: red !important;
+			}
+			.status.fatal, .status.fatal i {
+				color: red;
+			} .test-info .fatal  {
+				background-color: darkred !important;
+			}
+			.status.error, .status.error i {
+				color: tomato;
+			} .test-info .error {
+				background-color: tomato !important;
+			}
+			.status.warning, .status.warning i {
+				color: orange;
+			} .test-info .warning {
+				background-color: orange !important;
+			}
+			.status.pass, .status.pass i {
+				color: #32CD32;
+			} .test-info .pass, .name .pass {
+				background-color: #32CD32 !important;
+			}
+			.status.info, .status.info i {
+				color: blue;
+			} 
+			.status.skipped, .status.skipped i {
+				color: #FFCC66;
+			} .test-info .skipped {
+				background-color: #999 !important;
+			}
+			.status.ignore, .status.ignore i {
+				color: #FFCC66;
+			} .test-info .ignore {
+				background-color: #999 !important;
+			}
+			.extent-button .fa, .status .fa {
+				font-size: 13px !important;
+			}
+			#footer {
+				padding: 20px 0 100px;
+			}
+			.report-img {
+			    border: 4px solid #eee;
+			    display: block;
+			    height: auto;
+			    margin-top: 15px;
+			    text-align: center;
+			    width: 70%;
+			}
+			.pointer {
+				cursor: pointer;
+			}
+			div.scrollable {
+    			width: 100%;
+   				height: 100%;
+    			margin: 0;
+    			padding: 0;
+    			overflow: auto;
+			}
+    </style>
+  </head>
+  <body>
+  		<div id='extent-container'>
+  		<div id='header'>
+				<div id='topbar'>
+					<div class='topbar'>
+						<div class='topbar-items'>
+							<div class='topbar-items-left'>
+							
+							</div>
+							<div class='topbar-items-right'>
+								<span class='pointer resize expand' title='Resize view by enlarging/compressing tests area. Use this option if you have long test logs and would like to use broader viewing angles for analysis.'><i class='fa fa-expand'></i></span>	
+								<span class='pointer toggle-type' title='Convert Tests-toggles into accordion so only one test can remain open at a time. Turning this open will enable viewing only one test at a time and will close all others for a clean and organized view. Use this open if you intend to analyse only one test at a time.'><i class='fa fa-toggle-off'></i></span>	
+								<span>PaxoReport 1.0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id='title'>
+					<div class='title'>
+						<div class='logo'><h1>Paxo Functional Test</h1></div>
+					</div>
+					<div id='testset' class='testset passline'>
+                    	<div id='testsetname'>
+                    		<span>Testset Name: </span><span>Test Execution</span>
+                    	</div>
+                    	<div id='testsetdescription'>
+                    		<span>Execution Timestamp: </span><span>Sat, 3 Mar 2018 14:47:55 PM</span>
+                    	</div>
+                    	<div id='testsetstatus'>
+                    		<span>Verdict: </span><span class='pass'>PASS</span>
+                    	</div>
+                    </div>	
+					<div class='menu'>
+						<div class='menu-items'>
+							<ul>
+								<li class='menu-item-selected'><span class='tabs-1'>Dashboard</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+		</div>
+  		<div id='dashboard'>
+			<div class='dashboard'>
+				<div id='tabs-1'>
+					<div class='graphs'>
+						<div id='ts-status-dashboard'></div>
+						<div id='step-status-dashboard'></div>
+					</div>
+				</div>
+			</div>
+		</div>			
+  		<div id='content' class='content'>
+                    
+					<div id='filters'>
+							<div class='filters'>
+								<div class='filters-container'>
+									<div class='by-status'>
+										<div id="filter-pass" class="extent-button extent-button-green status-toggle"><i class="fa fa-check"></i>PASS</div>
+										<div id="filter-fail" class="extent-button extent-button-red status-toggle"><i class="fa fa-times-circle"></i>FAIL</div>
+										<div id="filter-skipped" class="extent-button extent-button-lightblack status-toggle"><i class="fa fa-minus-circle"></i>SKIPPED</div>
+										<div id="filter-warning" class="extent-button extent-button-orange status-toggle"><i class="fa fa-warning"></i>WARNING</div>
+									</div>
+								</div>
+							</div>
+					</div>			
+					<div id='tests'>
+						<!--TEST-->
+						<div class='test'>
+							<div class='test-header'>
+								<div class='test-info'>
+									<span class='test-status status pass'>PASS</span>
+									<span alt='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin1' title='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin1'>
+									<span class='name'>SpreeFunctionalTestWithTestNg.</span><span class='name'>validLogin1</span>
+									</span>
+								</div>
+								<div class='test-info-time'>
+									<span class='startedAt' alt='Test started time' title='Test started time'>14:48:19</span>
+									<span class='endedAt' alt='Test ended time' title='Test ended time'>14:48:26</span>
+									<span class='toggle-span'><i class='fa fa-caret-down'></i></span>
+								</div>
+								<div class='test-tooltip'>
+									
+								</div>
+								<div class='description'>
+									<span class='description-title'>Description: </span>
+									<span class='description-content'></span>
+								</div>
+							</div>
+							<div class='exec-info'>
+								<table class='extent-table'>
+									<thead>
+										<tr>
+											<th>Timestamp</th>
+											<th>Status</th>
+											<th>Step</th>
+											<th>Details</th>
+										</tr>
+									</thead>
+									<!--STEPS-->
+									<tbody>
+										<tr>
+    										<td>14:48:19</td>
+    										<td alt='INFO' title='INFO' class='status info'><i class='fa  fa-info'></i></td>
+    										<td>NavigateToLoginPage</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Navigation to login page by clicking login link</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+										<tr>
+    										<td>14:48:26</td>
+    										<td alt='PASS' title='PASS' class='status pass'><i class='fa  fa-check-circle'></i></td>
+    										<td>validLogin1</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Test Execution Success</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!--TEST-->
+						<div class='test'>
+							<div class='test-header'>
+								<div class='test-info'>
+									<span class='test-status status pass'>PASS</span>
+									<span alt='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin2' title='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin2'>
+									<span class='name'>SpreeFunctionalTestWithTestNg.</span><span class='name'>validLogin2</span>
+									</span>
+								</div>
+								<div class='test-info-time'>
+									<span class='startedAt' alt='Test started time' title='Test started time'>14:48:41</span>
+									<span class='endedAt' alt='Test ended time' title='Test ended time'>14:48:50</span>
+									<span class='toggle-span'><i class='fa fa-caret-down'></i></span>
+								</div>
+								<div class='test-tooltip'>
+									
+								</div>
+								<div class='description'>
+									<span class='description-title'>Description: </span>
+									<span class='description-content'></span>
+								</div>
+							</div>
+							<div class='exec-info'>
+								<table class='extent-table'>
+									<thead>
+										<tr>
+											<th>Timestamp</th>
+											<th>Status</th>
+											<th>Step</th>
+											<th>Details</th>
+										</tr>
+									</thead>
+									<!--STEPS-->
+									<tbody>
+										<tr>
+    										<td>14:48:41</td>
+    										<td alt='INFO' title='INFO' class='status info'><i class='fa  fa-info'></i></td>
+    										<td>NavigateToLoginPage</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Navigation to login page by clicking login link</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+										<tr>
+    										<td>14:48:50</td>
+    										<td alt='PASS' title='PASS' class='status pass'><i class='fa  fa-check-circle'></i></td>
+    										<td>validLogin2</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Test Execution Success</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!--TEST-->
+						<div class='test'>
+							<div class='test-header'>
+								<div class='test-info'>
+									<span class='test-status status pass'>PASS</span>
+									<span alt='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin3' title='com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg.validLogin3'>
+									<span class='name'>SpreeFunctionalTestWithTestNg.</span><span class='name'>validLogin3</span>
+									</span>
+								</div>
+								<div class='test-info-time'>
+									<span class='startedAt' alt='Test started time' title='Test started time'>14:49:29</span>
+									<span class='endedAt' alt='Test ended time' title='Test ended time'>14:49:37</span>
+									<span class='toggle-span'><i class='fa fa-caret-down'></i></span>
+								</div>
+								<div class='test-tooltip'>
+									
+								</div>
+								<div class='description'>
+									<span class='description-title'>Description: </span>
+									<span class='description-content'></span>
+								</div>
+							</div>
+							<div class='exec-info'>
+								<table class='extent-table'>
+									<thead>
+										<tr>
+											<th>Timestamp</th>
+											<th>Status</th>
+											<th>Step</th>
+											<th>Details</th>
+										</tr>
+									</thead>
+									<!--STEPS-->
+									<tbody>
+										<tr>
+    										<td>14:49:29</td>
+    										<td alt='INFO' title='INFO' class='status info'><i class='fa  fa-info'></i></td>
+    										<td>NavigateToLoginPage</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Navigation to login page by clicking login link</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+										<tr>
+    										<td>14:49:37</td>
+    										<td alt='PASS' title='PASS' class='status pass'><i class='fa  fa-check-circle'></i></td>
+    										<td>validLogin3</td>
+    										<td>
+    											<div class='scrollable'>		
+												<pre>Test Execution Success</pre>
+												</div>
+																						
+											</td>
+    									 </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+		</div>
+  </body>
+  
+  <script type='text/javascript'>
+  $(document).ready(function() {
+			$('.total-tests').text( $('.test').length );
+			$('.tests-passed').text( $('.test-status.pass').length );
+			$('.tests-failed').text( $('.test-status.fail').length + $('.test-status.fatal').length + $('.test-status.warning').length + $('.test-status.error').length );
+			$('.total-steps').text( $('tbody .status').length );
+			$('.steps-passed').text( $('td.status.pass').length );
+			$('.steps-failed').text( $('td.status.fail').length + $('td.status.fatal').length );
+			$('.menu span').click(function() {
+				var elm = $(this);
+				if (elm.parent().attr('class') != 'menu-item-selected') {
+					var t = $('.menu-item-selected span');
+					$('.' + $('#' + t.attr('class')).hide().attr('id')).parent().removeClass('menu-item-selected');
+					$('#' + elm.attr('class')).fadeIn(400);
+					elm.parent().addClass('menu-item-selected');
+				}
+			});
+			$('.test-header').click(function() {
+				var elm = $(this).parent();
+				var execInfo = elm.children('.exec-info');
+				var useAccordion = $('.toggle-type').hasClass('accordion') ? true : false;
+				if (!execInfo.is(':visible')) {
+					if (useAccordion) $('.test-expanded').removeClass('test-expanded').children('.exec-info').slideUp(200);
+					elm.addClass('test-expanded'); execInfo.slideDown('fast');
+				}
+				else {
+					elm.removeClass('test-expanded'); execInfo.slideUp('fast');
+				}
+			});
+			$('.toggle-type').click(function() {
+				var elm = $(this).children('i');
+				if (elm.parent().hasClass('accordion'))
+					elm.removeClass('fa-toggle-on').addClass('fa-toggle-off').parent().removeClass('accordion');
+				else 
+					elm.addClass('fa-toggle-on').removeClass('fa-toggle-off').parent().addClass('accordion');
+			});
+			$('.resize').click(function() {
+				var target = $(this);
+				if (target.hasClass('expand')) {
+					var winW = $(window).width();
+					var box = $('.content, .filters');
+					if (winW > 1100 && box.css('width') == '1100px') {
+						box.animate({ 'width' : ((winW - 1100) * .4) + 1100 + 'px' });
+						target.children().removeClass('fa-expand').addClass('fa-compress').parent().toggleClass('view-enabled');
+					} else {
+						box.animate({ 'width' : '1100px' });
+						target.children().removeClass('fa-compress').addClass('fa-expand').parent().toggleClass('view-enabled');
+					}
+				}
+			});
+			$('.status-toggle').click(function() {
+				var target = $(this); 
+				if (target.hasClass('status-toggle-on'))
+					target.removeClass('status-toggle-on').css('background-color', 'white').css('color', target.css('border-left-color'));
+				else
+					target.addClass('status-toggle-on').css('background-color', target.css('border-left-color')).css('color', 'white');
+				if (!$('.status-toggle').hasClass('status-toggle-on')) {
+					$('.test').fadeIn();
+					return;
+				}
+				$('.status-toggle').each(function() {
+					if ($(this).hasClass('status-toggle-on'))
+						$('.test').find('.test-info .' + $(this).text().toLowerCase()).closest('.test').fadeIn('fast');
+					else
+						$('.test').find('.test-info .' + $(this).text().toLowerCase()).closest('.test').fadeOut('fast');
+						
+				});
+			});
+		})
+		// charts
+		google.load('visualization', '1', {packages:['corechart']});
+		google.setOnLoadCallback(testSetChart);
+		google.setOnLoadCallback(testsChart);
+		function testSetChart() {
+			var data = google.visualization.arrayToDataTable([
+			  ['Test Status', 'Count'],
+			  ['Pass',     $('.test-info .pass').length + $('.test-info .info').length],
+			  ['Error',     $('.test-info .error').length],
+			  ['Warning',     $('.test-info .warning').length],
+			  ['Fail',      $('.test-info .fail').length + $('.test-info .fatal').length],
+			  ['Skipped',      $('.test-info .skipped').length]
+			]);
+			var options = {
+			  backgroundColor: { fill:'transparent' },
+			  colors: ['green', 'tomato', 'orange', 'red', '#999'],
+			  fontSize: '11',
+			  height: 275,
+			 
+			  pieSliceText: 'value', 
+			  title: 'TEST SUMMARY', 
+			  width: 450
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('ts-status-dashboard'));
+			chart.draw(data, options);
+		  }
+		function testsChart() {
+			var data = google.visualization.arrayToDataTable([
+			  ['Test Status', 'Count'],
+			  ['Pass',     $('td.pass').length],
+			  ['Fail',      $('td.fail').length],
+			  ['Fatal',     $('td.fatal').length],
+			  ['Error',      $('td.error').length],
+			  ['Warning',    $('td.warning').length],
+			  ['Info',    $('td.info').length],
+			  ['Skipped',    $('td.skipped').length]
+			]);
+			var options = {
+			  backgroundColor: { fill:'transparent' },
+			  colors: ['green', 'red', 'darkred', 'tomato', 'orange', 'dodgerblue', '#999'],
+			  fontSize: '11',
+			  height: 275,
+			  pieHole: 0.5,
+			  pieSliceText: 'value', 
+			  title: 'STEP SUMMARY', 
+			  width: 450
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('step-status-dashboard'));
+			chart.draw(data, options);
+		  }
+  
+  </script>
+</html>

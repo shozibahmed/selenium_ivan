@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Spree Test Suite" parallel="tests" thread-count="3">
+    <test name="Firefox">
+        <parameter name="browserName" value="grid_firefox_16"/>
+        <classes>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg"/>
+        </classes>
+    </test>
+    <test name="Chrome">
+        <parameter name="browserName" value="grid_chrome_16"/>
+        <classes>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg"/>
+        </classes>
+    </test>
+    <test name="IE">
+        <parameter name="browserName" value="grid_ie_16"/>
+        <classes>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg"/>
+        </classes>
+    </test>
+</suite>

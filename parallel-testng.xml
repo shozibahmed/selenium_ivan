@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Spree Test Suite" parallel="classes" thread-count="3">
+    <test name="Parallel-Test">
+        <classes>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg1"/>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg2"/>
+            <class name="com.shiftedtech.qa.scripts.testng.SpreeFunctionalTestWithTestNg3"/>
+        </classes>
+    </test>
+</suite>
